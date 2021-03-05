@@ -10,16 +10,18 @@ Edited By: Colm Keyes
     justiceahira@gmail.com
 """
 
-
 import os
 import sys
 import pygame
 from pygame.locals import *
+from chessboard import Application
+from time import sleep
 
 from . import board
+import tkinter as tk
+import subprocess
 
-
-os.environ['SDL_VIDEO_CENTERED'] = '1' # Centre display window.
+#os.environ['SDL_VIDEO_CENTERED'] = '1' # Centre display window.
 
 FPS = 30
 FPSCLOCK = pygame.time.Clock()
@@ -60,21 +62,23 @@ def checkForQuit():
 
 
 def start( fen='' ):
-    global gameboard
-    pygame.init()
 
-    # Setting up the GUI window.
+    global gameboard
+
+
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     pygame.display.set_caption('LOCI')
-    BASICFONT = pygame.font.SysFont('calibri', BASICFONTSIZE)
+    #BASICFONT = pygame.font.SysFont('calibri', BASICFONTSIZE)
 
     checkForQuit()
 
     DISPLAYSURF.fill(BGCOLOR)
     gameboard = board.Board(colors, BGCOLOR, DISPLAYSURF)
     gameboard.displayBoard([],[])
-    
-    pygame.display.update([])
+
+    #root.update_idletasks()
+    pygame.display.init()
+    pygame.display.update()
     FPSCLOCK.tick(FPS)
 
 def update(fen, attack_squares_coords, attack_squares_coords_behind):
@@ -83,5 +87,6 @@ def update(fen, attack_squares_coords, attack_squares_coords_behind):
     #gameboard.updatePieces(fen)
 
     pygame.display.update()
+    #root.update()
     FPSCLOCK.tick(FPS)
 

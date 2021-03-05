@@ -89,15 +89,15 @@ class Board:
                 return block
             else:
                 RGB_array_behind = RGB_cmap_df.loc[grey_color_val_behind.iloc[0][0]]
-                c = color_blend(pygame.Color(RGB_array_behind), pygame.Color(RGB_array) ,10)   #pygame.Color(255, 0, 0), pygame.Color(0, 255, 0), 10)
-                return c
+                c_blend = color_blend(pygame.Color(np.int(RGB_array_behind[0]),np.int(RGB_array_behind[1]),np.int(RGB_array_behind[2])), pygame.Color(np.int(RGB_array[0]),np.int(RGB_array[1]),np.int(RGB_array[2])) ,10)   #pygame.Color(255, 0, 0), pygame.Color(0, 255, 0), 10)
+                return c_blend
 
         except KeyError:
             pass
         pass
 
 
-    def drawTiles(self, attack_squares_coords, attack_squares_coords_behind ):
+    def drawTiles(self, attack_squares_coords, attack_squares_coords_behind):
 
             for i in range(1, len(Board.boardRect)+1):
                 for j in range(1, len(Board.boardRect[i-1])+1):
@@ -110,7 +110,7 @@ class Board:
                         if start_color.values[0][0] == end_color.values[0][0]:
                             try:
                                 self.DISPLAYSURF.blit(self.gtile(start_color, end_color), Board.boardRect[i - 1][j - 1])
-                                sleep(0.1)
+                                sleep(0.075)
                                 pygame.display.update()
                             except KeyError as error:
                                 pass
@@ -122,6 +122,7 @@ class Board:
                                 next_color = c_blend.get_next_color()
                                 block.fill(next_color[:3])#RGB_array)
                                 self.DISPLAYSURF.blit(block, Board.boardRect[i-1][j-1])
+                                #self.updatePieces(fen)
                                 pygame.display.update()
 
                     except IndexError:
@@ -212,50 +213,50 @@ class Board:
         for i in range(len(fenboard)):
             for j in range(len(fenboard[i])):
                 if fenboard[i][j] in ['b', 'B']:
-                    if fenboard[i][j] is 'b':
+                    if fenboard[i][j] == 'b':
                         piece = self.createPiece(pieces.BLACK, pieces.BISHOP, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
-                    elif fenboard[i][j] is 'B':
+                    elif fenboard[i][j] == 'B':
                         piece = self.createPiece(pieces.WHITE, pieces.BISHOP, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
 
                 elif fenboard[i][j] in ['k', 'K']:
-                    if fenboard[i][j] is 'k':
+                    if fenboard[i][j] == 'k':
                         piece = self.createPiece(pieces.BLACK, pieces.KING, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
-                    elif fenboard[i][j] is 'K':
+                    elif fenboard[i][j] == 'K':
                         piece = self.createPiece(pieces.WHITE, pieces.KING, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
 
                 elif fenboard[i][j] in ['n', 'N']:
-                    if fenboard[i][j] is 'n':
+                    if fenboard[i][j] == 'n':
                         piece = self.createPiece(pieces.BLACK, pieces.KNGHT, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
-                    elif fenboard[i][j] is 'N':
+                    elif fenboard[i][j] == 'N':
                         piece = self.createPiece(pieces.WHITE, pieces.KNGHT, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
 
                 elif fenboard[i][j] in ['p', 'P']:
-                    if fenboard[i][j] is 'p':
+                    if fenboard[i][j] == 'p':
                         piece = self.createPiece(pieces.BLACK, pieces.PAWN, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
-                    elif fenboard[i][j] is 'P':
+                    elif fenboard[i][j] == 'P':
                         piece = self.createPiece(pieces.WHITE, pieces.PAWN, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
                 
                 elif fenboard[i][j] in ['q', 'Q']:
-                    if fenboard[i][j] is 'q':
+                    if fenboard[i][j] == 'q':
                         piece = self.createPiece(pieces.BLACK, pieces.QUEEN, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
-                    elif fenboard[i][j] is 'Q':
+                    elif fenboard[i][j] == 'Q':
                         piece = self.createPiece(pieces.WHITE, pieces.QUEEN, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
                 
                 elif fenboard[i][j] in ['r', 'R']:
-                    if fenboard[i][j] is 'r':
+                    if fenboard[i][j] == 'r':
                         piece = self.createPiece(pieces.BLACK, pieces.ROOK, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
-                    elif fenboard[i][j] is 'R':
+                    elif fenboard[i][j] == 'R':
                         piece = self.createPiece(pieces.WHITE, pieces.ROOK, Board.boardRect[i][j])
                         self.pieceRect.append(piece)
                         
