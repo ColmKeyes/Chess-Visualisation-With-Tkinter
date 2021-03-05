@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import (
 from matplotlib.figure import Figure
 import numpy as np
 import matplotlib.pyplot as plt
-from Chess_pgn_player_class_test import Chess_pgn_player_class_test
+from Chess_pgn_player_class import Chess_pgn_player_class
 from tkinter import *
 
 
@@ -60,7 +60,7 @@ class page_two(tk.Frame):
         tk.Label(self, text="Choose PGN", font='Helvetica 18 bold').pack(pady=10, padx=10)
         ttk.Button(self, text="BEGIN SIMULATION", command = lambda: [self.pass_entry_text(),controller.new_page(page_three)]).pack(pady=0, padx=10)
         self.option = tk.StringVar(self)
-        options = ["C:/Users/Lord Colm/Desktop/Chess_CNN/December4.pgn", "C:/Users/Lord Colm/Documents/Adams.pgn","C:/Users/Lord Colm/Documents/Akobian.pgn"]
+        options = ["C:/Users/Lord Colm/Desktop/Chess_CNN/PGNs/December4.pgn", "C:/Users/Lord Colm/Desktop/Chess_CNN/PGNs/Adams.pgn","C:/Users/Lord Colm/Desktop/Chess_CNN/PGNs/Akobian.pgn"]
         ttk.OptionMenu(self, self.option, options[1], *options).pack(pady=10, padx=10)
         ttk.Button(self, text="Open Folders...", command = lambda: [self.load_file(),controller.new_page(page_three)]).pack(pady=0, padx=10)
         ttk.Button(self, text="Test Graph Page", command = lambda: [controller.new_page(options_page)]).pack(pady=0, padx=10)
@@ -70,13 +70,13 @@ class page_two(tk.Frame):
         file =  filedialog.askopenfilename(initialdir="/", title="Select file", \
                                                filetypes=(("PGN files", "*.pgn"), ("all files", "*.*")))
         page_two.text = np.str(file)
-        Chess_pgn_player_class_test.PGN_str = page_two.text
+        Chess_pgn_player_class.PGN_str = page_two.text
         print("PGN Location:",page_two.text)
 
 
     def pass_entry_text(self):
         page_two.text = np.str(self.option.get())
-        Chess_pgn_player_class_test.PGN_str = page_two.text
+        Chess_pgn_player_class.PGN_str = page_two.text
         print("PGN Location:",page_two.text)
 
 
