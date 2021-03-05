@@ -3,7 +3,7 @@
 @Time    : 26/12/2020 02:01
 @Author  : Colm Keyes
 @Email   : keyesco@tcd.ie
-@File    : Chess_pgn_player_class_test
+@File    : Chess_pgn_player_class
 """
 
 import numpy as np
@@ -12,19 +12,46 @@ from chessboard import display
 import pandas as pd
 import time
 import PySimpleGUI as sg
+from chessboard import Application
+import tkinter as tk
+import os
+class Chess_pgn_player_class():
 
 
-class Chess_pgn_player_class:
+    def tkinter_start(self):
+        while "page_three" not in np.str(Application.Application.current_page)  :
+            self.root.update()
 
 
-    def __init__(self): #, game_a, board, coordinates, mainline_moves ):
-        self.game_a = chess.pgn.read_game(open("C:/Users/Lord Colm/Desktop/Chess_CNN/December4.pgn"))
+    def start(self):
+        if "page_three" in np.str(Application.Application.current_page) :
+            self.main()
+
+
+    def __init__(self):
+
+        #tkinter window
+        ####################
+        self.root = tk.Tk()
+        self.PGN_str = Application.page_two.text
+        Application.Application(self.root).pack(side="top", fill="both", expand=True)
+        self.embed = tk.Frame(self.root, width=1800, height=800)
+        self.embed.pack()
+        os.environ['SDL_WINDOWID'] = str(self.embed.winfo_id())
+        os.environ['SDL_VIDEODRIVER'] = 'windib'
+        self.tkinter_start()
+        self.PGN_str = Application.page_two.text
+        self.game_a = chess.pgn.read_game(open(self.PGN_str))
         self.board = self.game_a.board()
         self.board_behind = self.game_a.board()
         self.coordinates = [(x + 1, y + 1) for x in range(8) for y in range(8)]
         self.mainline_moves = list(self.game_a.mainline_moves())
         self.d=2
         self.move_number = 0
+        self.start()
+
+
+
 
 
     def move(self, mainline_move):
@@ -49,8 +76,7 @@ class Chess_pgn_player_class:
             total_square_attackers_dict_basic.append([total_square_attackers])
             total_square_attackers_dict.append([total_square_attackers_normalized])
 
-        attack_squares_coords = pd.DataFrame(data=(total_square_attackers_dict, self.coordinates))
-
+        attack_squares_coords = pd.DataFrame(data=(total_square_attackers_dict[::-1], self.coordinates))
         return attack_squares_coords
 
 
@@ -79,19 +105,17 @@ class Chess_pgn_player_class:
                 self.move(mainline_move)
                 if self.move_number >= 1:
                     self.board_behind.push(self.mainline_moves[self.move_number - 1])
-                    #print("board behind move",self.mainline_moves[self.move_number - 1])
 
                 self.move_number += 1
-
-
-
 
             display.terminate()
 
 
 if __name__ == "__main__":
     # execute only if main as a script
-    player = Chess_pgn_player_class_test()
-    player.main()
+    player = Chess_pgn_player_class()
+    player.start()
 
-Chess_pgn_player_class_test
+
+
+Chess_pgn_player_class
